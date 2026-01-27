@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m modules.video_analyzer:*)",
+      "Bash(find:*)",
+      "Bash(python -c:*)",
+      "Bash(dir:*)",
+      "Bash(python modules/video_analyzer.py:*)",
+      "Bash(python check_video.py:*)",
+      "Bash(python test_progress.py:*)",
+      "Bash(python -m py_compile:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(git add:*)",
+      "Bash(git push:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}

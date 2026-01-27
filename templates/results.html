@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Results - Video KYC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .results-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .decision-banner {
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.2em;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .decision-banner.pass {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .decision-banner.flag {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .decision-banner.reject {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .decision-text {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .decision-score {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .decision-reason {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .result-card h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #2196F3;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .module-score {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f5f5f5;
+        }
+
+        .module-name {
+            flex: 1;
+            font-weight: 500;
+            font-size: 1.05em;
+        }
+
+        .module-value {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-left: 15px;
+        }
+
+        .module-value.high {
+            color: #4CAF50;
+        }
+
+        .module-value.medium {
+            color: #ff9800;
+        }
+
+        .module-value.low {
+            color: #f44336;
+        }
+
+        .score-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .score-fill {
+            height: 100%;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .score-fill.high {
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+        }
+
+        .score-fill.medium {
+            background: linear-gradient(90deg, #ff9800, #FFA726);
+        }
+
+        .score-fill.low {
+            background: linear-gradient(90deg, #f44336, #EF5350);
+        }
+
+        .findings-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .findings-list li {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            background: #f9f9f9;
+            border-left: 4px solid #2196F3;
+        }
+
+        .findings-list li.warning {
+            border-left-color: #ff9800;
+            background: #fff3e0;
+        }
+
+        .findings-list li.error {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+
+        .findings-list li.success {
+            border-left-color: #4CAF50;
+            background: #e8f5e9;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn-secondary {
+            background: #666;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+        }
+
+        .metadata-section {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        .metadata-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .metadata-row:last-child {
+            border-bottom: none;
+        }
+
+        .metadata-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .metadata-value {
+            color: #333;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #e0e0e0;
+            border-top: 6px solid #2196F3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #666;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .back-link:hover {
+            background: #555;
+        }
+
+        .module-details {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+
+        .module-details p {
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .module-details strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p style="margin-top: 20px; font-size: 1.2em; color: #666;">Loading results...</p>
+    </div>
+
+    <div class="results-container" style="display: none;" id="resultsContent">
+        <a href="/analyze" class="back-link">← Back to Analysis</a>
+
+        <h1>Video KYC Analysis Results</h1>
+
+        <!-- Decision Banner -->
+        <div id="decisionBanner" class="decision-banner">
+            <div class="decision-text" id="decisionText">-</div>
+            <div class="decision-score" id="decisionScore">-</div>
+            <div class="decision-reason" id="decisionReason">-</div>
+        </div>
+
+        <!-- Main Results Grid -->
+        <div class="results-grid">
+            <!-- Module Scores -->
+            <div class="result-card">
+                <h3>Module Scores</h3>
+                <div id="moduleScores">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Key Findings -->
+            <div class="result-card">
+                <h3>Key Findings</h3>
+                <ul class="findings-list" id="keyFindings">
+                    <!-- Populated by JavaScript -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Detailed Results -->
+        <div class="result-card">
+            <h3>Detailed Analysis</h3>
+            <div id="detailedResults">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Metadata -->
+        <div class="result-card">
+            <h3>Analysis Information</h3>
+            <div class="metadata-section" id="analysisMetadata">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="/analyze" class="btn btn-primary">Analyze Another Video</a>
+            <button onclick="downloadFullReport()" class="btn btn-success" id="downloadBtn">Download Full Report</button>
+            <a href="/" class="btn btn-secondary">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        const analysisId = "{{ analysis_id }}";
+        let analysisData = null;
+
+        // Load results on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadResults();
+        });
+
+        async function loadResults() {
+            try {
+                const response = await fetch(`/api/analysis-result/${analysisId}`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                analysisData = await response.json();
+
+                // Hide loading, show results
+                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('resultsContent').style.display = 'block';
+
+                // Populate all sections
+                populateDecisionBanner();
+                populateModuleScores();
+                populateKeyFindings();
+                populateDetailedResults();
+                populateMetadata();
+
+            } catch (error) {
+                console.error('Error loading results:', error);
+                document.getElementById('loadingOverlay').innerHTML =
+                    '<div style="text-align: center;">' +
+                    '<h2 style="color: #f44336;">Error Loading Results</h2>' +
+                    '<p style="color: #666;">' + error.message + '</p>' +
+                    '<a href="/analyze" class="btn btn-primary" style="margin-top: 20px;">Back to Analysis</a>' +
+                    '</div>';
+            }
+        }
+
+        function populateDecisionBanner() {
+            const summary = analysisData.summary || {};
+            const decisionText = summary.decision || 'UNKNOWN';
+            const finalScore = summary.final_score || 0;
+            const reason = summary.recommendation || 'No reason provided';
+
+            // Set decision class
+            const banner = document.getElementById('decisionBanner');
+            banner.className = 'decision-banner ' + decisionText.toLowerCase();
+
+            // Set text content
+            document.getElementById('decisionText').textContent = decisionText;
+            document.getElementById('decisionScore').textContent = finalScore.toFixed(1) + '/100';
+            document.getElementById('decisionReason').textContent = reason;
+        }
+
+        function populateModuleScores() {
+            const container = document.getElementById('moduleScores');
+            const scores = analysisData.module_scores || {};
+
+            const modules = [
+                { name: 'Liveness Detection', key: 'liveness', weight: 25 },
+                { name: 'Face Matching', key: 'face_match', weight: 25 },
+                { name: 'Script Compliance', key: 'script_compliance', weight: 20 },
+                { name: 'Document Verification', key: 'document_verification', weight: 15 },
+                { name: 'Behavior Analysis', key: 'behavior', weight: 10 },
+                { name: 'Consent Verification', key: 'consent', weight: 5 }
+            ];
+
+            container.innerHTML = '';
+
+            modules.forEach(module => {
+                const score = scores[module.key] || 0;
+                const contribution = (score * module.weight) / 100;
+                const scoreClass = score >= 70 ? 'high' : score >= 50 ? 'medium' : 'low';
+
+                const moduleDiv = document.createElement('div');
+                moduleDiv.style.marginBottom = '20px';
+
+                moduleDiv.innerHTML = `
+                    <div class="module-score">
+                        <span class="module-name">${module.name} (${module.weight}%)</span>
+                        <span class="module-value ${scoreClass}">${score.toFixed(1)}/100</span>
+                    </div>
+                    <div class="score-bar">
+                        <div class="score-fill ${scoreClass}" style="width: ${score}%">
+                            ${score.toFixed(0)}% → ${contribution.toFixed(1)} pts
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(moduleDiv);
+            });
+
+            // Animate bars after a short delay
+            setTimeout(() => {
+                document.querySelectorAll('.score-fill').forEach(fill => {
+                    fill.style.width = fill.getAttribute('style').match(/width: ([\d.]+)%/)[1] + '%';
+                });
+            }, 100);
+        }
+
+        function populateKeyFindings() {
+            const container = document.getElementById('keyFindings');
+            const findings = [];
+
+            // Analyze results and extract key findings
+            const summary = analysisData.summary || {};
+            const scores = analysisData.module_scores || {};
+
+            // Add decision as first finding
+            const decisionClass = summary.decision === 'PASS' ? 'success' :
+                                 summary.decision === 'FLAG' ? 'warning' : 'error';
+            findings.push({
+                text: `Final Decision: ${summary.decision} (${summary.final_score.toFixed(1)}/100)`,
+                class: decisionClass
+            });
+
+            // Check liveness
+            if (scores.liveness >= 70) {
+                findings.push({
+                    text: 'Liveness detection passed - Person appears physically present',
+                    class: 'success'
+                });
+            } else {
+                findings.push({
+                    text: 'Liveness detection concerns - Review required',
+                    class: 'warning'
+                });
+            }
+
+            // Check face matching
+            if (scores.face_match >= 70) {
+                findings.push({
+                    text: 'Face matching successful - Identity verified',
+                    class: 'success'
+                });
+            } else if (scores.face_match === 50) {
+                findings.push({
+                    text: 'Face matching not performed - No reference image provided',
+                    class: 'warning'
+                });
+            } else {
+                findings.push({
+                    text: 'Face matching failed - Identity verification issue',
+                    class: 'error'
+                });
+            }
+
+            // Check script compliance
+            if (scores.script_compliance >= 85) {
+                findings.push({
+                    text: 'Script compliance excellent - All mandatory sections covered',
+                    class: 'success'
+                });
+            } else if (scores.script_compliance >= 70) {
+                findings.push({
+                    text: 'Script compliance adequate - Minor sections missing',
+                    class: 'warning'
+                });
+            } else {
+                findings.push({
+                    text: 'Script compliance insufficient - Critical sections missing',
+                    class: 'error'
+                });
+            }
+
+            // Check behavior
+            if (scores.behavior >= 80) {
+                findings.push({
+                    text: 'Behavior analysis clean - No red flags detected',
+                    class: 'success'
+                });
+            } else if (scores.behavior >= 60) {
+                findings.push({
+                    text: 'Minor behavioral concerns noted',
+                    class: 'warning'
+                });
+            } else {
+                findings.push({
+                    text: 'Significant behavioral red flags detected',
+                    class: 'error'
+                });
+            }
+
+            // Render findings
+            container.innerHTML = '';
+            findings.forEach(finding => {
+                const li = document.createElement('li');
+                li.className = finding.class;
+                li.textContent = finding.text;
+                container.appendChild(li);
+            });
+        }
+
+        function populateDetailedResults() {
+            const container = document.getElementById('detailedResults');
+            const details = analysisData.detailed_results || {};
+
+            let html = '';
+
+            // Liveness details
+            if (details.liveness) {
+                const liveness = details.liveness;
+                const checks = liveness.checks || {};
+                html += `
+                    <div class="module-details">
+                        <h4>Liveness Detection Details</h4>
+                        <p><strong>Score:</strong> ${liveness.score}/100</p>
+                        <p><strong>Confidence:</strong> ${liveness.confidence || 'Unknown'}</p>
+                        <p><strong>Blink Detection:</strong> ${checks.blink_detection ? 'Passed' : 'Failed'}</p>
+                        <p><strong>Head Movement:</strong> ${checks.head_movement ? 'Detected' : 'Not Detected'}</p>
+                        <p><strong>Screen Replay Check:</strong> ${checks.screen_replay ? 'Passed' : 'Failed'}</p>
+                        <p><strong>Texture Analysis:</strong> ${checks.texture_analysis ? 'Passed' : 'Failed'}</p>
+                    </div>
+                `;
+            }
+
+            // Script compliance details
+            if (details.script_compliance) {
+                const script = details.script_compliance;
+                const sections = script.sections_covered || [];
+                html += `
+                    <div class="module-details">
+                        <h4>Script Compliance Details</h4>
+                        <p><strong>Score:</strong> ${script.score}/100</p>
+                        <p><strong>Checks Passed:</strong> ${script.checks_passed}/${script.checks_total}</p>
+                        <p><strong>Critical Failures:</strong> ${script.critical_failures}</p>
+                        <p><strong>Sections Covered:</strong> ${sections.length} sections</p>
+                        <p style="font-size: 0.9em; color: #666;">${sections.join(', ')}</p>
+                    </div>
+                `;
+            }
+
+            // Behavior details
+            if (details.behavior) {
+                const behavior = details.behavior;
+                html += `
+                    <div class="module-details">
+                        <h4>Behavior Analysis Details</h4>
+                        <p><strong>Score:</strong> ${behavior.score}/100</p>
+                        <p><strong>Risk Level:</strong> ${behavior.risk_level || 'Unknown'}</p>
+                        <p><strong>Red Flags:</strong> ${behavior.total_flags || 0}</p>
+                        <p><strong>Critical Flags:</strong> ${behavior.critical_flags || 0}</p>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html || '<p style="color: #999;">No detailed results available</p>';
+        }
+
+        function populateMetadata() {
+            const container = document.getElementById('analysisMetadata');
+            const videoMetadata = analysisData.video_metadata || {};
+
+            const rows = [
+                { label: 'Analysis ID', value: analysisId },
+                { label: 'Video Filename', value: analysisData.video_file || 'Unknown' },
+                { label: 'Video Duration', value: videoMetadata.duration_formatted || 'Unknown' },
+                { label: 'Resolution', value: videoMetadata.resolution || 'Unknown' },
+                { label: 'Analyzed At', value: analysisData.generated_at || 'Unknown' },
+                { label: 'Report ID', value: analysisData.report_id || 'Unknown' }
+            ];
+
+            let html = '';
+            rows.forEach(row => {
+                html += `
+                    <div class="metadata-row">
+                        <span class="metadata-label">${row.label}:</span>
+                        <span class="metadata-value">${row.value}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function downloadFullReport() {
+            // Try to get HTML report path from analysis data
+            const htmlPath = analysisData.report_paths?.html;
+
+            if (htmlPath) {
+                // Open HTML report in new tab
+                window.open('/outputs/analysis/' + htmlPath.split('/').pop(), '_blank');
+            } else {
+                // Fallback: download JSON
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analysisData, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", analysisId + "_results.json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            }
+        }
+    </script>
+</body>
+</html>

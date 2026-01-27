@@ -1,0 +1,376 @@
+{
+  "script_version": "Client Version 1.1",
+  "script_name": "Video KYC Script - RBI Compliant",
+  "total_sections": 8,
+  "estimated_duration": "5-8 minutes",
+  "sections": [
+    {
+      "section_id": 1,
+      "section_name": "Introduction & Consent",
+      "mandatory": true,
+      "instructions_for_agent": "Start the call with a warm greeting and establish consent",
+      "script_lines": [
+        {
+          "line_id": "1.1",
+          "speaker": "agent",
+          "text": "Hello [Customer Name], welcome to [Bank Name] Video KYC.",
+          "notes": "Personalize with customer name and bank name",
+          "group_with_next": true
+        },
+        {
+          "line_id": "1.2",
+          "speaker": "agent",
+          "text": "This video call is live and being recorded",
+          "group_with_next": true
+        },
+        {
+          "line_id": "1.3",
+          "speaker": "agent",
+          "text": "It will be used only for identity verification",
+          "group_with_next": true
+        },
+        {
+          "line_id": "1.4",
+          "speaker": "agent",
+          "text": "Your information will remain confidential and secure"
+        },
+        {
+          "line_id": "1.5",
+          "speaker": "agent",
+          "text": "Are you currently present in India?",
+          "expects_response": true,
+          "expected_response": "Yes/Affirmative",
+          "critical": true
+        },
+        {
+          "line_id": "1.6",
+          "speaker": "agent",
+          "text": "Are you attending this call on your own, without anyone assisting or prompting you?",
+          "expects_response": true,
+          "expected_response": "Yes/Affirmative",
+          "critical": true
+        }
+      ]
+    },
+    {
+      "section_id": 2,
+      "section_name": "Personal Details Confirmation",
+      "mandatory": true,
+      "instructions_for_agent": "Ask customer to verbally confirm their details",
+      "script_lines": [
+        {
+          "line_id": "2.1",
+          "speaker": "agent",
+          "text": "Kindly confirm the following details verbally:",
+          "group_with_next": true
+        },
+        {
+          "line_id": "2.2",
+          "speaker": "agent",
+          "text": "Your full name",
+          "expects_response": true,
+          "expected_response": "Customer states full name"
+        },
+        {
+          "line_id": "2.3",
+          "speaker": "agent",
+          "text": "Your date of birth",
+          "expects_response": true,
+          "expected_response": "Customer states DOB"
+        },
+        {
+          "line_id": "2.4",
+          "speaker": "agent",
+          "text": "The purpose for which you are opening/updating this account",
+          "expects_response": true,
+          "expected_response": "Customer states account purpose"
+        }
+      ]
+    },
+    {
+      "section_id": 3,
+      "section_name": "PAN Verification",
+      "mandatory": true,
+      "instructions_for_agent": "Customer must show original PAN card and verify number",
+      "script_lines": [
+        {
+          "line_id": "3.1",
+          "speaker": "agent",
+          "text": "Please hold your original PAN card in front of the camera and tilt it slightly.",
+          "action_required": "customer_shows_pan",
+          "capture_mode": true,
+          "critical": true
+        },
+        {
+          "line_id": "3.2",
+          "speaker": "agent",
+          "text": "Kindly confirm the PAN number verbally.",
+          "expects_response": true,
+          "expected_response": "Customer reads PAN number"
+        }
+      ]
+    },
+    {
+      "section_id": 4,
+      "section_name": "Aadhaar Verification",
+      "mandatory": true,
+      "instructions_for_agent": "Customer must show Aadhaar with masked number",
+      "script_lines": [
+        {
+          "line_id": "4.1",
+          "speaker": "agent",
+          "text": "Please show your Aadhaar",
+          "action_required": "customer_shows_aadhaar",
+          "group_with_next": true
+        },
+        {
+          "line_id": "4.2",
+          "speaker": "agent",
+          "text": "Kindly ensure the Aadhaar number is masked.",
+          "notes": "Check that last 4 digits or full number is masked",
+          "critical": true,
+          "compliance_check": "aadhaar_masking",
+          "capture_mode": true
+        },
+        {
+          "line_id": "4.3",
+          "speaker": "agent",
+          "text": "Your Aadhaar will be used only for KYC purposes, as per law."
+        }
+      ]
+    },
+    {
+      "section_id": 5,
+      "section_name": "Liveness Check",
+      "mandatory": true,
+      "instructions_for_agent": "Conduct liveness verification actions",
+      "script_lines": [
+        {
+          "line_id": "5.1",
+          "speaker": "agent",
+          "text": "Please blink your eyes once",
+          "action_required": "customer_blinks",
+          "liveness_check": true
+        },
+        {
+          "line_id": "5.2",
+          "speaker": "agent",
+          "text": "Please turn your face slightly to the left and then to the right",
+          "action_required": "customer_turns_head",
+          "liveness_check": true
+        },
+        {
+          "line_id": "5.3",
+          "speaker": "agent",
+          "text": "Kindly smile briefly",
+          "action_required": "customer_smiles",
+          "liveness_check": true
+        }
+      ]
+    },
+    {
+      "section_id": 6,
+      "section_name": "Address Confirmation",
+      "mandatory": true,
+      "instructions_for_agent": "Read address from records and confirm with customer",
+      "script_lines": [
+        {
+          "line_id": "6.1",
+          "speaker": "agent",
+          "text": "As per our records, your address is:",
+          "group_with_next": true
+        },
+        {
+          "line_id": "6.2",
+          "speaker": "agent",
+          "text": "[Read address]",
+          "notes": "Agent reads the full address from customer records",
+          "group_with_next": true
+        },
+        {
+          "line_id": "6.3",
+          "speaker": "agent",
+          "text": "Please confirm if this is your current residential address.",
+          "expects_response": true,
+          "expected_response": "Yes/Affirmative or customer corrects address"
+        }
+      ]
+    },
+    {
+      "section_id": 7,
+      "section_name": "Declarations",
+      "mandatory": true,
+      "instructions_for_agent": "Customer must confirm all declarations",
+      "script_lines": [
+        {
+          "line_id": "7.1",
+          "speaker": "agent",
+          "text": "Please confirm the following:",
+          "group_with_next": true
+        },
+        {
+          "line_id": "7.2",
+          "speaker": "agent",
+          "text": "You are not acting on behalf of any other person",
+          "expects_response": true,
+          "expected_response": "Confirmed/Yes",
+          "critical": true
+        },
+        {
+          "line_id": "7.3",
+          "speaker": "agent",
+          "text": "The account will not be used for illegal activities",
+          "expects_response": true,
+          "expected_response": "Confirmed/Yes",
+          "critical": true
+        },
+        {
+          "line_id": "7.4",
+          "speaker": "agent",
+          "text": "You are not a politically exposed person (PEP)",
+          "expects_response": true,
+          "expected_response": "Confirmed/No, I am not a PEP"
+        }
+      ]
+    },
+    {
+      "section_id": 8,
+      "section_name": "Closing",
+      "mandatory": true,
+      "instructions_for_agent": "Conclude the call professionally",
+      "auto_terminate": true,
+      "script_lines": [
+        {
+          "line_id": "8.1",
+          "speaker": "agent",
+          "text": "Thank you for your cooperation.",
+          "group_with_next": true
+        },
+        {
+          "line_id": "8.2",
+          "speaker": "agent",
+          "text": "Your Video KYC process is now complete.",
+          "group_with_next": true
+        },
+        {
+          "line_id": "8.3",
+          "speaker": "agent",
+          "text": "Your account will be activated after internal verification, and you will receive confirmation via SMS or email.",
+          "group_with_next": true
+        },
+        {
+          "line_id": "8.4",
+          "speaker": "agent",
+          "text": "Thank you for choosing [Bank/NBFC Name].",
+          "notes": "Use actual bank/NBFC name",
+          "group_with_next": true
+        },
+        {
+          "line_id": "8.5",
+          "speaker": "agent",
+          "text": "Have a great day ahead.",
+          "auto_terminate": true
+        }
+      ]
+    }
+  ],
+  "critical_checks": [
+    {
+      "check_id": "C1",
+      "description": "Customer confirms presence in India",
+      "section": 1,
+      "line": "1.5",
+      "failure_action": "Cannot proceed with KYC"
+    },
+    {
+      "check_id": "C2",
+      "description": "Customer attending call independently",
+      "section": 1,
+      "line": "1.6",
+      "failure_action": "Red flag - potential fraud"
+    },
+    {
+      "check_id": "C3",
+      "description": "Original PAN card shown",
+      "section": 3,
+      "line": "3.1",
+      "failure_action": "Cannot proceed without PAN"
+    },
+    {
+      "check_id": "C4",
+      "description": "Aadhaar number is masked",
+      "section": 4,
+      "line": "4.2",
+      "failure_action": "Compliance violation if not masked"
+    },
+    {
+      "check_id": "C5",
+      "description": "Liveness checks performed",
+      "section": 5,
+      "failure_action": "Cannot verify if live person"
+    },
+    {
+      "check_id": "C6",
+      "description": "Not acting on behalf of others",
+      "section": 7,
+      "line": "7.2",
+      "failure_action": "Red flag - reject"
+    },
+    {
+      "check_id": "C7",
+      "description": "No illegal activity declaration",
+      "section": 7,
+      "line": "7.3",
+      "failure_action": "Red flag - reject"
+    }
+  ],
+  "red_flags": [
+    {
+      "flag_id": "RF1",
+      "description": "Customer refuses to show PAN card",
+      "severity": "critical",
+      "action": "reject"
+    },
+    {
+      "flag_id": "RF2",
+      "description": "Aadhaar not masked properly",
+      "severity": "critical",
+      "action": "reject"
+    },
+    {
+      "flag_id": "RF3",
+      "description": "Customer says 'No' to attending call independently",
+      "severity": "critical",
+      "action": "reject"
+    },
+    {
+      "flag_id": "RF4",
+      "description": "Customer hesitates on declarations",
+      "severity": "high",
+      "action": "flag_for_review"
+    },
+    {
+      "flag_id": "RF5",
+      "description": "Customer refuses liveness checks",
+      "severity": "critical",
+      "action": "reject"
+    },
+    {
+      "flag_id": "RF6",
+      "description": "Address confirmation is refused or unclear",
+      "severity": "medium",
+      "action": "flag_for_review"
+    }
+  ],
+  "timing_guidelines": {
+    "introduction_consent": "1-2 minutes",
+    "personal_details": "1 minute",
+    "pan_verification": "1 minute",
+    "aadhaar_verification": "1 minute",
+    "liveness_check": "1 minute",
+    "address_confirmation": "1 minute",
+    "declarations": "1 minute",
+    "closing": "30 seconds",
+    "total_call_duration": "5-8 minutes"
+  }
+}

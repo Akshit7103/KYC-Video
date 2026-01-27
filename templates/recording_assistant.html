@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video KYC Recording - Automated</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">← Back to Home</a>
+            <h1>Video KYC Recording System</h1>
+            <p class="subtitle">Automated AI voice + Webcam recording</p>
+        </header>
+
+        <div class="recording-interface">
+            <!-- Webcam Preview -->
+            <div class="section" id="webcam-preview">
+                <h2>📹 Webcam Preview</h2>
+                <div class="webcam-container">
+                    <video id="webcam-video" autoplay muted playsinline></video>
+                    <div class="webcam-status">
+                        <span id="webcam-status-text">Initializing camera...</span>
+                    </div>
+                    <!-- Next Button Overlay -->
+                    <div class="video-overlay" id="video-overlay" style="display: none;">
+                        <button id="next-question-btn" class="btn-overlay">
+                            Next Question →
+                        </button>
+                    </div>
+                    <!-- Capture Mode Overlay (for PAN/Aadhaar) -->
+                    <div class="capture-overlay" id="capture-overlay" style="display: none;">
+                        <button id="capture-btn" class="btn-overlay btn-capture">
+                            📸 Capture
+                        </button>
+                        <button id="retake-btn" class="btn-overlay btn-retake" style="display: none;">
+                            🔄 Retake
+                        </button>
+                        <button id="capture-next-btn" class="btn-overlay btn-capture-next" style="display: none;">
+                            Next Question →
+                        </button>
+                    </div>
+                    <!-- Document capture indicator -->
+                    <div class="document-indicator" id="document-indicator" style="display: none;">
+                        <div class="document-text" id="document-text">
+                            📇 Show Your PAN Card
+                        </div>
+                    </div>
+                    <!-- Captured indicator -->
+                    <div class="capture-status" id="capture-status" style="display: none;">
+                        ✅ Captured!
+                    </div>
+                    <!-- Hidden canvas for image capture -->
+                    <canvas id="capture-canvas" style="display: none;"></canvas>
+                </div>
+            </div>
+
+            <!-- Timer and Controls -->
+            <div class="section" id="recording-controls">
+                <div class="control-panel">
+                    <div class="timer-display">
+                        <span id="timer">00:00</span>
+                        <span class="timer-label">Recording Time</span>
+                    </div>
+                    <div class="button-group">
+                        <button id="start-btn" class="btn btn-success">🎥 Start Recording</button>
+                        <button id="stop-btn" class="btn btn-danger" disabled>⏹️ Stop Recording</button>
+                        <button id="download-btn" class="btn btn-primary" disabled>💾 Download Video</button>
+                    </div>
+                </div>
+                <div class="recording-info">
+                    <p><strong>How it works:</strong></p>
+                    <ol>
+                        <li>Click "Start Recording" - Video goes fullscreen</li>
+                        <li>AI voice reads each question automatically</li>
+                        <li>Respond to camera and click "Next" when ready</li>
+                        <li>For documents: Show card → Click "Capture" → Click "Next"</li>
+                        <li>Recording ends automatically after closing</li>
+                        <li>Download video and save metadata</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Progress Tracker -->
+            <div class="section" id="progress-tracker">
+                <h3>Recording Progress</h3>
+                <div class="progress-bars">
+                    <div class="progress-item">
+                        <span>Introduction & Consent</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-1"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>Personal Details</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-2"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>PAN Verification</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-3"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>Aadhaar Verification</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-4"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>Liveness Check</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-5"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>Address Confirmation</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-6"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>Declarations</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-7"></div></div>
+                    </div>
+                    <div class="progress-item">
+                        <span>Closing</span>
+                        <div class="progress-bar"><div class="progress-fill" id="progress-8"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metadata Form -->
+            <div class="section" id="metadata-form" style="display: none;">
+                <h2>Recording Complete - Save Metadata</h2>
+                <form id="metadata-form-element">
+                    <div class="form-group">
+                        <label>Video Filename:</label>
+                        <input type="text" id="video-filename" placeholder="video_kyc_1234567890.webm" readonly>
+                        <small>Auto-filled after download</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Customer Name (optional):</label>
+                        <input type="text" id="customer-name" placeholder="John Doe">
+                    </div>
+
+                    <div class="form-group">
+                        <label>PAN Number (optional):</label>
+                        <input type="text" id="pan-number" placeholder="ABCDE1234F" pattern="[A-Z]{5}[0-9]{4}[A-Z]">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Aadhaar Last 4 Digits (optional):</label>
+                        <input type="text" id="aadhaar-last4" placeholder="1234" pattern="[0-9]{4}">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Documents Shown:</label>
+                        <label><input type="checkbox" id="doc-pan"> PAN Card</label>
+                        <label><input type="checkbox" id="doc-aadhaar"> Aadhaar Card</label>
+                        <label><input type="checkbox" id="doc-aadhaar-masked"> Aadhaar Masked</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Consent Given:</label>
+                        <label><input type="radio" name="consent" value="true" checked> Yes</label>
+                        <label><input type="radio" name="consent" value="false"> No</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notes:</label>
+                        <textarea id="notes" rows="3" placeholder="Any observations or notes about this recording..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save Metadata</button>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p>Automated Video KYC Recording System</p>
+            <p class="small">AI voice + Webcam recording - No case selection needed</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/recording_assistant.js') }}"></script>
+</body>
+</html>

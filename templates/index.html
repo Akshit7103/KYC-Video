@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video KYC - AI Checker POC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Video KYC - AI Checker</h1>
+            <p class="subtitle">RBI-Compliant Video KYC Verification System</p>
+        </header>
+
+        <div class="main-content">
+            <div class="hero-section">
+                <h2>POC System for AI-Powered KYC Verification</h2>
+                <p>Record authentic KYC videos and let AI analyze compliance, liveness, and behavior.</p>
+            </div>
+
+            <div class="feature-cards">
+                <div class="card">
+                    <div class="card-icon">📹</div>
+                    <h3>Recording Assistant</h3>
+                    <p>Interactive script guidance for recording KYC videos with real-time prompts.</p>
+                    <a href="/recording-assistant" class="btn btn-primary">Start Recording</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">📤</div>
+                    <h3>Upload Videos</h3>
+                    <p>Upload recorded KYC videos and associated documents for analysis.</p>
+                    <a href="/upload" class="btn btn-secondary">Upload</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI Analysis</h3>
+                    <p>Analyze uploaded videos using AI for liveness, face matching, and compliance.</p>
+                    <a href="/analyze" class="btn btn-secondary">Analyze</a>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>What This System Does</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>✓ Liveness Detection</strong>
+                        <p>Verifies person is physically present, not a replay or deepfake</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>✓ Facial Recognition</strong>
+                        <p>Matches face in video with PAN/Aadhaar documents</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>✓ Script Compliance</strong>
+                        <p>Ensures all mandatory KYC questions were asked</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>✓ Document Verification</strong>
+                        <p>Checks Aadhaar redaction and document authenticity</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>✓ Behavior Analysis</strong>
+                        <p>Detects suspicious customer behavior and evasion</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>✓ Consent Verification</strong>
+                        <p>Confirms audio-visual consent was obtained</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-start">
+                <h3>Quick Start Guide</h3>
+                <ol>
+                    <li><strong>Read the Guide:</strong> Check <code>RECORDING_GUIDE.md</code> for detailed instructions</li>
+                    <li><strong>Prepare Documents:</strong> PAN card and redacted Aadhaar (mask last 4 digits)</li>
+                    <li><strong>Use Recording Assistant:</strong> Follow interactive script for each case scenario</li>
+                    <li><strong>Upload Videos:</strong> Upload recorded videos with metadata</li>
+                    <li><strong>Analyze:</strong> Run AI analysis and review results</li>
+                </ol>
+            </div>
+
+            <div class="cases-overview">
+                <h3>Recording Cases Needed</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Case</th>
+                            <th>Scenario</th>
+                            <th>Expected Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Case 1</td>
+                            <td>Genuine - Fully Cooperative</td>
+                            <td class="result-pass">PASS</td>
+                        </tr>
+                        <tr>
+                            <td>Case 2</td>
+                            <td>Genuine with Minor Issues</td>
+                            <td class="result-pass">PASS</td>
+                        </tr>
+                        <tr>
+                            <td>Case 3</td>
+                            <td>Suspicious Behavior</td>
+                            <td class="result-flag">FLAG</td>
+                        </tr>
+                        <tr>
+                            <td>Case 4</td>
+                            <td>Fake Video / Replay</td>
+                            <td class="result-reject">REJECT</td>
+                        </tr>
+                        <tr>
+                            <td>Case 5</td>
+                            <td>Non-Compliant Documents</td>
+                            <td class="result-reject">REJECT</td>
+                        </tr>
+                        <tr>
+                            <td>Case 6</td>
+                            <td>Not Attending Independently</td>
+                            <td class="result-reject">REJECT</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>Video KYC AI Checker POC - RBI Compliant</p>
+            <p class="small">For demonstration purposes only</p>
+        </footer>
+    </div>
+</body>
+</html>

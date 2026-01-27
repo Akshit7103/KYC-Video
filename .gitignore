@@ -1,0 +1,88 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Flask
+instance/
+.webassets-cache
+
+# Environment variables
+.env
+.env.local
+
+# Videos and large files
+data/videos/*.mp4
+data/videos/*.avi
+data/videos/*.mov
+data/videos/*.webm
+*.mp4
+*.avi
+*.mov
+*.webm
+
+# Document images (keep README)
+data/documents/*.jpg
+data/documents/*.jpeg
+data/documents/*.png
+!data/documents/README.md
+
+# Captured images during recording
+data/captures/
+
+# Output files
+outputs/reports/*.pdf
+outputs/reports/*.json
+outputs/analysis/*/
+outputs/status/*.json
+
+# AI Models
+models/*.h5
+models/*.pkl
+models/*.pt
+models/*.pth
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+flask_output.txt
+
+# Test and utility scripts
+test_*.py
+quick_test.py
+cleanup_status.py
+check_video.py
+test_analysis_api.py
+test_progress.py
+
+# Parent directories (don't track user home directory)
+../../*
+../../../*
