@@ -1,0 +1,466 @@
+/* ========================================
+   Results Page Styles
+   ======================================== */
+
+.results-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 3rem 80px;
+}
+
+/* Decision Banner */
+.decision-banner {
+    border-radius: 16px;
+    padding: 48px;
+    text-align: center;
+    margin-bottom: 48px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.decision-banner.decision-pass {
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    color: #065F46;
+}
+
+.decision-banner.decision-flag {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    color: #92400E;
+}
+
+.decision-banner.decision-reject {
+    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+    color: #991B1B;
+}
+
+.decision-icon {
+    margin-bottom: 20px;
+}
+
+.decision-icon svg {
+    stroke: currentColor;
+}
+
+.decision-verdict {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+}
+
+.decision-score {
+    margin-bottom: 16px;
+}
+
+.score-value {
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.score-total {
+    font-size: 36px;
+    font-weight: 600;
+    opacity: 0.7;
+}
+
+.decision-message {
+    font-size: 18px;
+    font-weight: 500;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Results Section */
+.results-section {
+    margin-bottom: 48px;
+}
+
+.section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1A202C;
+    margin-bottom: 24px;
+}
+
+/* Module Scores Grid */
+.modules-scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.module-score-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.2s;
+}
+
+.module-score-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.module-score-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.module-score-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1A202C;
+    margin: 0;
+    flex: 1;
+}
+
+.module-score-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1A202C;
+    line-height: 1;
+}
+
+.module-score-weight {
+    font-size: 13px;
+    color: #64748B;
+    margin-bottom: 12px;
+}
+
+.module-score-bar {
+    height: 8px;
+    background: #E2E8F0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.module-score-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-out;
+}
+
+.module-score-points {
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748B;
+    text-align: right;
+}
+
+/* Key Findings */
+.findings-list {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.finding-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.finding-item:last-child {
+    margin-bottom: 0;
+}
+
+.finding-item.finding-pass,
+.finding-item.finding-success {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: #10B981;
+}
+
+.finding-item.finding-warning,
+.finding-item.finding-flag {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: #F59E0B;
+}
+
+.finding-item.finding-error,
+.finding-item.finding-reject {
+    background: rgba(239, 68, 68, 0.05);
+    border-color: #EF4444;
+}
+
+.finding-item.finding-info {
+    background: rgba(79, 70, 229, 0.05);
+    border-color: #4F46E5;
+}
+
+.finding-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.finding-item.finding-pass .finding-icon,
+.finding-item.finding-success .finding-icon {
+    color: #10B981;
+}
+
+.finding-item.finding-warning .finding-icon,
+.finding-item.finding-flag .finding-icon {
+    color: #F59E0B;
+}
+
+.finding-item.finding-error .finding-icon,
+.finding-item.finding-reject .finding-icon {
+    color: #EF4444;
+}
+
+.finding-item.finding-info .finding-icon {
+    color: #4F46E5;
+}
+
+.finding-item p {
+    flex: 1;
+    margin: 0;
+    color: #1A202C;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.no-findings {
+    text-align: center;
+    color: #94A3B8;
+    padding: 40px;
+    font-size: 15px;
+}
+
+/* Detailed Analysis - Accordion */
+.detailed-analysis {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.analysis-accordion {
+    border-bottom: 1px solid #E2E8F0;
+}
+
+.analysis-accordion:last-child {
+    border-bottom: none;
+}
+
+.accordion-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.accordion-header:hover {
+    background: #F8FAFC;
+}
+
+.accordion-header h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: #1A202C;
+}
+
+.accordion-score {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.accordion-icon {
+    color: #64748B;
+    transition: transform 0.2s;
+}
+
+.analysis-accordion.active .accordion-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.analysis-accordion.active .accordion-content {
+    max-height: 1000px;
+}
+
+.accordion-details {
+    padding: 0 24px 24px;
+    color: #64748B;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-row {
+    display: flex;
+    gap: 16px;
+    padding: 12px;
+    background: #F8FAFC;
+    border-radius: 6px;
+}
+
+.detail-key {
+    font-weight: 600;
+    color: #475569;
+    min-width: 180px;
+}
+
+.detail-value {
+    color: #1A202C;
+    flex: 1;
+}
+
+/* Metadata Grid */
+.metadata-grid {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.metadata-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.metadata-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metadata-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1A202C;
+    word-break: break-word;
+}
+
+/* Action Buttons */
+.results-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 48px;
+    padding-top: 48px;
+    border-top: 1px solid #E2E8F0;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-action.btn-primary {
+    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    color: white;
+}
+
+.btn-action.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.btn-action.btn-secondary {
+    background: white;
+    color: #64748B;
+    border: 1px solid #E2E8F0;
+}
+
+.btn-action.btn-secondary:hover {
+    background: #F8FAFC;
+    border-color: #CBD5E0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Error Message */
+.error-message {
+    background: white;
+    border-radius: 12px;
+    padding: 48px;
+    text-align: center;
+    color: #DC2626;
+    font-size: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .results-page {
+        padding: 24px 1.5rem 60px;
+    }
+
+    .decision-banner {
+        padding: 32px 20px;
+    }
+
+    .decision-verdict {
+        font-size: 36px;
+    }
+
+    .score-value {
+        font-size: 56px;
+    }
+
+    .score-total {
+        font-size: 28px;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+
+    .modules-scores-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .metadata-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .results-actions {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        width: 100%;
+        justify-content: center;
+    }
+}
