@@ -116,14 +116,14 @@
         // Get analysis ID from URL
         const analysisId = window.location.pathname.split('/').pop();
 
-        // Module configuration
+        // Module configuration (matching JSON keys)
         const moduleConfig = {
-            'liveness_detection': { name: 'Liveness Detection', weight: 20, color: '#3B82F6' },
+            'liveness': { name: 'Liveness Detection', weight: 25, color: '#3B82F6' },
             'face_match': { name: 'Face Match', weight: 25, color: '#10B981' },
             'script_compliance': { name: 'Script Compliance', weight: 20, color: '#7C3AED' },
             'document_verification': { name: 'Document Verification', weight: 15, color: '#F59E0B' },
-            'behavior_analysis': { name: 'Behavior Analysis', weight: 10, color: '#EF4444' },
-            'consent_verification': { name: 'Consent Verification', weight: 10, color: '#06B6D4' }
+            'behavior': { name: 'Behavior Analysis', weight: 10, color: '#EF4444' },
+            'consent': { name: 'Consent Verification', weight: 5, color: '#06B6D4' }
         };
 
         // Load results data
@@ -161,8 +161,9 @@
             const score = document.getElementById('decision-score');
             const message = document.getElementById('decision-message');
 
-            const finalScore = data.final_score || 0;
-            const decision = data.final_decision || 'PASS';
+            const summary = data.summary || {};
+            const finalScore = summary.final_score || 0;
+            const decision = summary.decision || 'PASS';
 
             // Set banner class
             banner.className = 'decision-banner decision-' + decision.toLowerCase();
@@ -192,7 +193,7 @@
             score.querySelector('.score-value').textContent = finalScore.toFixed(1);
 
             // Set message
-            message.textContent = data.decision_reason || '';
+            message.textContent = summary.recommendation || '';
         }
 
         function renderModuleScores(data) {
@@ -203,9 +204,8 @@
 
             Object.keys(moduleConfig).forEach(moduleKey => {
                 const config = moduleConfig[moduleKey];
-                const moduleData = modules[moduleKey] || { score: 0, points_contribution: 0 };
-                const score = moduleData.score || 0;
-                const points = moduleData.points_contribution || 0;
+                const score = modules[moduleKey] || 0;
+                const points = (score * config.weight / 100);
 
                 const card = document.createElement('div');
                 card.className = 'module-score-card';
@@ -228,13 +228,34 @@
             const container = document.getElementById('key-findings');
             const findings = [];
 
-            // Collect findings from all modules
-            const modules = data.module_scores || {};
-            Object.keys(modules).forEach(moduleKey => {
-                const moduleData = modules[moduleKey];
-                if (moduleData.key_findings) {
-                    findings.push(...moduleData.key_findings);
+            // Add passed modules as success findings
+            const modulePassed = data.module_passed || {};
+            Object.keys(modulePassed).forEach(moduleKey => {
+                const config = moduleConfig[moduleKey];
+                if (config && modulePassed[moduleKey]) {
+                    findings.push({
+                        severity: 'success',
+                        message: `${config.name}: All checks passed`
+                    });
                 }
+            });
+
+            // Add recommendations as warnings
+            const recommendations = data.recommendations || [];
+            recommendations.forEach(rec => {
+                findings.push({
+                    severity: 'warning',
+                    message: `${rec.module}: ${rec.recommendation}`
+                });
+            });
+
+            // Add red flags as errors
+            const redFlags = data.red_flags || [];
+            redFlags.forEach(flag => {
+                findings.push({
+                    severity: 'error',
+                    message: flag.message || flag
+                });
             });
 
             container.innerHTML = '';
@@ -256,7 +277,7 @@
                             '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>'
                         }
                     </div>
-                    <p>${finding.message || finding}</p>
+                    <p>${finding.message}</p>
                 `;
                 container.appendChild(item);
             });
@@ -264,14 +285,15 @@
 
         function renderDetailedAnalysis(data) {
             const container = document.getElementById('detailed-analysis');
-            const modules = data.module_scores || {};
+            const moduleScores = data.module_scores || {};
+            const detailedResults = data.detailed_results || {};
 
             container.innerHTML = '';
 
             Object.keys(moduleConfig).forEach(moduleKey => {
                 const config = moduleConfig[moduleKey];
-                const moduleData = modules[moduleKey] || {};
-                const score = moduleData.score || 0;
+                const score = moduleScores[moduleKey] || 0;
+                const moduleData = detailedResults[moduleKey] || {};
 
                 const accordion = document.createElement('div');
                 accordion.className = 'analysis-accordion';
@@ -306,7 +328,8 @@
 
         function renderMetadata(data) {
             const container = document.getElementById('metadata-grid');
-            const metadata = data.metadata || {};
+            const videoMeta = data.video_metadata || {};
+            const auditTrail = data.audit_trail || {};
 
             container.innerHTML = `
                 <div class="metadata-item">
@@ -315,23 +338,23 @@
                 </div>
                 <div class="metadata-item">
                     <div class="metadata-label">Video File</div>
-                    <div class="metadata-value">${metadata.video_filename || data.video_filename || '-'}</div>
+                    <div class="metadata-value">${data.video_file || '-'}</div>
                 </div>
                 <div class="metadata-item">
                     <div class="metadata-label">Duration</div>
-                    <div class="metadata-value">${metadata.duration || data.duration || '-'}</div>
+                    <div class="metadata-value">${videoMeta.duration_formatted || '-'}</div>
                 </div>
                 <div class="metadata-item">
                     <div class="metadata-label">Resolution</div>
-                    <div class="metadata-value">${metadata.resolution || data.resolution || '-'}</div>
+                    <div class="metadata-value">${videoMeta.resolution || '-'}</div>
                 </div>
                 <div class="metadata-item">
                     <div class="metadata-label">Timestamp</div>
-                    <div class="metadata-value">${metadata.timestamp || data.timestamp || new Date().toLocaleString()}</div>
+                    <div class="metadata-value">${data.generated_at ? new Date(data.generated_at).toLocaleString() : '-'}</div>
                 </div>
                 <div class="metadata-item">
                     <div class="metadata-label">Report Id</div>
-                    <div class="metadata-value">${metadata.report_id || 'RPT-' + Date.now()}</div>
+                    <div class="metadata-value">${data.report_id || '-'}</div>
                 </div>
             `;
         }
