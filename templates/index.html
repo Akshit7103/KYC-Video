@@ -3,136 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video KYC - AI Checker POC</title>
+    <title>Video KYC - AI Verification System</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Video KYC - AI Checker</h1>
-            <p class="subtitle">RBI-Compliant Video KYC Verification System</p>
-        </header>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">V</div>
+                <div class="logo-text">
+                    <div class="logo-title">Video KYC</div>
+                    <div class="logo-subtitle">AI Verification</div>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link active">Home</a>
+                <a href="/recording-assistant" class="nav-link">Recording Assistant</a>
+                <a href="/upload" class="nav-link">Upload</a>
+                <a href="/analyze" class="nav-link">Analysis</a>
+            </nav>
+        </div>
+    </header>
 
-        <div class="main-content">
-            <div class="hero-section">
-                <h2>POC System for AI-Powered KYC Verification</h2>
-                <p>Record authentic KYC videos and let AI analyze compliance, liveness, and behavior.</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-badge">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 0L10.5 5.5L16 6L12 10L13 16L8 13L3 16L4 10L0 6L5.5 5.5L8 0Z" fill="currentColor"/>
+                </svg>
+                Enterprise KYC Solution
+            </div>
+            <h1 class="hero-title">
+                Video KYC<br>
+                <span class="hero-title-gradient">AI Verification System</span>
+            </h1>
+            <p class="hero-description">
+                Complete RBI-compliant video verification with advanced AI analysis.<br>
+                Detect liveness, verify identity, and ensure compliance in real-time.
+            </p>
+            <div class="hero-features">
+                <div class="hero-feature">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="currentColor"/>
+                        <path d="M6 8L7.5 9.5L10 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    RBI Compliant
+                </div>
+                <div class="hero-feature">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="currentColor"/>
+                        <path d="M6 8L7.5 9.5L10 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Bank-Grade Security
+                </div>
+                <div class="hero-feature">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16Z" fill="currentColor"/>
+                        <path d="M6 8L7.5 9.5L10 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    AI-Powered Analysis
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="/recording-assistant" class="btn btn-primary">
+                    Start Recording
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+                <a href="/upload" class="btn btn-secondary">Upload Video</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Cards -->
+    <section class="features">
+        <div class="features-container">
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                    </svg>
+                </div>
+                <h3>Recording Assistant</h3>
+                <p>Interactive script guidance for recording KYC videos with real-time prompts and compliance checks.</p>
+                <a href="/recording-assistant" class="feature-link">
+                    Get Started
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
             </div>
 
-            <div class="feature-cards">
-                <div class="card">
-                    <div class="card-icon">📹</div>
-                    <h3>Recording Assistant</h3>
-                    <p>Interactive script guidance for recording KYC videos with real-time prompts.</p>
-                    <a href="/recording-assistant" class="btn btn-primary">Start Recording</a>
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3V17M12 17L7 12M12 17L17 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>Upload Videos</h3>
+                <p>Upload pre-recorded videos and supporting documents for comprehensive verification analysis.</p>
+                <a href="/upload" class="feature-link">
+                    Get Started
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon feature-icon-purple">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3>AI Analysis</h3>
+                <p>Advanced artificial intelligence analyzes videos for liveness, identity match, and compliance.</p>
+                <a href="/analyze" class="feature-link">
+                    Get Started
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3L11 8L6 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Modules Section -->
+    <section class="modules">
+        <div class="modules-container">
+            <h2 class="section-title">AI-Powered Verification Modules</h2>
+            <p class="section-description">Six comprehensive analysis modules work together to deliver accurate, reliable KYC verification results.</p>
+
+            <div class="modules-grid">
+                <div class="module-card">
+                    <div class="module-icon module-icon-blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M9 9H9.01M15 9H15.01M9 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Liveness Detection</h3>
+                    <p>Verifies physical presence through blink detection, head movement analysis, and anti-spoofing checks.</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">📤</div>
-                    <h3>Upload Videos</h3>
-                    <p>Upload recorded KYC videos and associated documents for analysis.</p>
-                    <a href="/upload" class="btn btn-secondary">Upload</a>
+                <div class="module-card">
+                    <div class="module-icon module-icon-teal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M6 20C6 16.6863 8.68629 14 12 14C15.3137 14 18 16.6863 18 20" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Facial Recognition</h3>
+                    <p>Matches customer face with submitted identity documents using advanced biometric algorithms.</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">🤖</div>
+                <div class="module-card">
+                    <div class="module-icon module-icon-purple">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15" stroke="currentColor" stroke-width="2"/>
+                            <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Script Compliance</h3>
+                    <p>Ensures all mandatory questions are asked and customer consent is properly recorded.</p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon module-icon-orange">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 8H17M7 12H17M7 16H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M4 4H20V20H4V4Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Document Verification</h3>
+                    <p>Validates authenticity of PAN, Aadhaar, and other identity documents through OCR analysis.</p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon module-icon-red">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 12H21M12 3V21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 3L21 12L12 21L3 12L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Behavior Analysis</h3>
+                    <p>Detects suspicious patterns, nervousness indicators, and potential fraud signals.</p>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-icon module-icon-cyan">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Consent Verification</h3>
+                    <p>Confirms clear audio-visual consent with timestamp validation and recording integrity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Guide -->
+    <section class="quick-start">
+        <div class="quick-start-container">
+            <h2 class="section-title">Quick Start Guide</h2>
+            <p class="section-description">Get started with Video KYC verification in four simple steps.</p>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">
+                        <div class="step-number">1</div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Record or Upload</h3>
+                    <p>Use the Recording Assistant with guided scripts, or upload a pre-recorded KYC video.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon">
+                        <div class="step-number">2</div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <path d="M12 3V17M12 17L7 12M12 17L17 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Add Documents</h3>
+                    <p>Upload reference images of PAN, Aadhaar, or other identity documents for verification.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon">
+                        <div class="step-number">3</div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
                     <h3>AI Analysis</h3>
-                    <p>Analyze uploaded videos using AI for liveness, face matching, and compliance.</p>
-                    <a href="/analyze" class="btn btn-secondary">Analyze</a>
+                    <p>Select your video and configure analysis settings. Our AI processes everything automatically.</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-icon">
+                        <div class="step-number">4</div>
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15" stroke="currentColor" stroke-width="2"/>
+                            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Get Results</h3>
+                    <p>Receive detailed analysis with module scores, findings, and a clear PASS/FLAG/REJECT decision.</p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="info-section">
-                <h3>What This System Does</h3>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <strong>✓ Liveness Detection</strong>
-                        <p>Verifies person is physically present, not a replay or deepfake</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>✓ Facial Recognition</strong>
-                        <p>Matches face in video with PAN/Aadhaar documents</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>✓ Script Compliance</strong>
-                        <p>Ensures all mandatory KYC questions were asked</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>✓ Document Verification</strong>
-                        <p>Checks Aadhaar redaction and document authenticity</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>✓ Behavior Analysis</strong>
-                        <p>Detects suspicious customer behavior and evasion</p>
-                    </div>
-                    <div class="info-item">
-                        <strong>✓ Consent Verification</strong>
-                        <p>Confirms audio-visual consent was obtained</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Recording Scenarios -->
+    <section class="scenarios">
+        <div class="scenarios-container">
+            <h2 class="section-title">Recording Case Scenarios</h2>
+            <p class="section-description">Overview of different verification scenarios and their expected outcomes.</p>
 
-            <div class="quick-start">
-                <h3>Quick Start Guide</h3>
-                <ol>
-                    <li><strong>Read the Guide:</strong> Check <code>RECORDING_GUIDE.md</code> for detailed instructions</li>
-                    <li><strong>Prepare Documents:</strong> PAN card and redacted Aadhaar (mask last 4 digits)</li>
-                    <li><strong>Use Recording Assistant:</strong> Follow interactive script for each case scenario</li>
-                    <li><strong>Upload Videos:</strong> Upload recorded videos with metadata</li>
-                    <li><strong>Analyze:</strong> Run AI analysis and review results</li>
-                </ol>
-            </div>
-
-            <div class="cases-overview">
-                <h3>Recording Cases Needed</h3>
+            <div class="scenarios-table">
                 <table>
                     <thead>
                         <tr>
-                            <th>Case</th>
+                            <th>#</th>
                             <th>Scenario</th>
-                            <th>Expected Result</th>
+                            <th>Description</th>
+                            <th>Expected Outcome</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Case 1</td>
-                            <td>Genuine - Fully Cooperative</td>
-                            <td class="result-pass">PASS</td>
+                            <td>1</td>
+                            <td>Perfect Verification</td>
+                            <td>Customer follows all instructions perfectly with valid documents</td>
+                            <td><span class="badge badge-pass">PASS</span></td>
                         </tr>
                         <tr>
-                            <td>Case 2</td>
-                            <td>Genuine with Minor Issues</td>
-                            <td class="result-pass">PASS</td>
+                            <td>2</td>
+                            <td>Missing Sections</td>
+                            <td>Incomplete script coverage with some sections skipped</td>
+                            <td><span class="badge badge-flag">FLAG</span></td>
                         </tr>
                         <tr>
-                            <td>Case 3</td>
+                            <td>3</td>
+                            <td>Document Mismatch</td>
+                            <td>Face doesn't match the submitted identity documents</td>
+                            <td><span class="badge badge-reject">REJECT</span></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Liveness Failure</td>
+                            <td>Spoofing attempt detected (screen replay or photo)</td>
+                            <td><span class="badge badge-reject">REJECT</span></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Consent Issues</td>
+                            <td>Unclear or missing verbal consent from customer</td>
+                            <td><span class="badge badge-flag">FLAG</span></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
                             <td>Suspicious Behavior</td>
-                            <td class="result-flag">FLAG</td>
-                        </tr>
-                        <tr>
-                            <td>Case 4</td>
-                            <td>Fake Video / Replay</td>
-                            <td class="result-reject">REJECT</td>
-                        </tr>
-                        <tr>
-                            <td>Case 5</td>
-                            <td>Non-Compliant Documents</td>
-                            <td class="result-reject">REJECT</td>
-                        </tr>
-                        <tr>
-                            <td>Case 6</td>
-                            <td>Not Attending Independently</td>
-                            <td class="result-reject">REJECT</td>
+                            <td>Customer shows signs of coaching or nervousness</td>
+                            <td><span class="badge badge-flag">FLAG</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+    </section>
 
-        <footer>
-            <p>Video KYC AI Checker POC - RBI Compliant</p>
-            <p class="small">For demonstration purposes only</p>
-        </footer>
-    </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Video KYC AI Verification System - RBI Compliant</p>
+            <p class="footer-small">For demonstration and evaluation purposes</p>
+        </div>
+    </footer>
 </body>
 </html>
