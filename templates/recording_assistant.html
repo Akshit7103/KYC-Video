@@ -33,111 +33,47 @@
             <p class="page-subtitle">Follow the guided script to complete RBI-compliant video KYC recording.</p>
         </div>
 
-        <div class="recording-layout">
-            <!-- Left Panel: Script Section -->
-            <div class="script-panel">
-                <!-- Progress Bar -->
-                <div class="section-progress-bar">
-                    <div class="section-progress-fill" id="section-progress" style="width: 0%;"></div>
+        <div class="recording-simple-layout">
+            <!-- Camera Preview -->
+            <div class="camera-preview-large" id="camera-preview">
+                <video id="webcam-video" autoplay muted playsinline></video>
+                <div class="camera-overlay" id="camera-status">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M23 7l-7 5 7 5V7z"></path>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                    <p>Camera Preview</p>
                 </div>
-
-                <!-- Section Header -->
-                <div class="section-header" id="section-header">
-                    <div class="section-number">Section 1 of 8</div>
-                    <h2 class="section-title">Introduction & Consent</h2>
-                </div>
-
-                <!-- Script Questions -->
-                <div class="script-questions" id="script-container">
-                    <div class="script-item">
-                        <span class="script-number">1</span>
-                        <p class="script-text">Good morning/afternoon. I am [Agent Name] calling from [Bank Name].</p>
-                    </div>
-                    <div class="script-item">
-                        <span class="script-number">2</span>
-                        <p class="script-text">Am I speaking with [Customer Name]?</p>
-                    </div>
-                    <div class="script-item">
-                        <span class="script-number">3</span>
-                        <p class="script-text">This call is being recorded for Video KYC verification. Do I have your consent to proceed?</p>
-                    </div>
-                    <div class="script-item">
-                        <span class="script-number">4</span>
-                        <p class="script-text">Please confirm that you are in a well-lit area and your face is clearly visible.</p>
-                    </div>
-                </div>
-
-                <!-- Navigation Buttons -->
-                <div class="script-navigation">
-                    <button class="btn-secondary" id="prev-btn" disabled>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="15 18 9 12 15 6"></polyline>
-                        </svg>
-                        Previous
-                    </button>
-                    <div class="section-indicator" id="section-indicator">1 / 8</div>
-                    <button class="btn-primary" id="next-btn">
-                        Next
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
-                </div>
+                <!-- Hidden canvas for captures -->
+                <canvas id="capture-canvas" style="display: none;"></canvas>
             </div>
 
-            <!-- Right Panel: Camera & Controls -->
-            <div class="camera-panel">
-                <!-- Camera Preview -->
-                <div class="camera-preview" id="camera-preview">
-                    <video id="webcam-video" autoplay muted playsinline></video>
-                    <div class="camera-overlay" id="camera-status">
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M23 7l-7 5 7 5V7z"></path>
-                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                        </svg>
-                        <p>Camera Preview</p>
-                    </div>
-                    <!-- Hidden canvas for captures -->
-                    <canvas id="capture-canvas" style="display: none;"></canvas>
-                </div>
-
+            <!-- Recording Controls -->
+            <div class="recording-controls-panel">
                 <!-- Recording Duration -->
-                <div class="recording-duration">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <div class="recording-duration-large">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
                     </svg>
                     <span>Recording Duration</span>
-                    <div class="timer" id="timer">00:00</div>
+                    <div class="timer-large" id="timer">00:00</div>
                 </div>
 
-                <!-- Start Recording Button -->
-                <button class="btn-record" id="start-recording-btn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <circle cx="12" cy="12" r="8"></circle>
-                    </svg>
-                    Start Recording
-                </button>
-
-                <!-- Document Capture Section -->
-                <div class="document-capture">
-                    <h3 class="document-title">Document Capture</h3>
-                    <div class="document-buttons">
-                        <button class="btn-document" id="capture-pan-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                <circle cx="12" cy="13" r="4"></circle>
-                            </svg>
-                            Capture PAN
-                        </button>
-                        <button class="btn-document" id="capture-aadhaar-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                                <circle cx="12" cy="13" r="4"></circle>
-                            </svg>
-                            Capture Aadhaar
-                        </button>
-                    </div>
+                <!-- Recording Buttons -->
+                <div class="recording-buttons">
+                    <button class="btn-record-large" id="start-recording-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="8"></circle>
+                        </svg>
+                        Start Recording
+                    </button>
+                    <button class="btn-stop-large" id="stop-recording-btn" style="display: none;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="6" width="12" height="12"></rect>
+                        </svg>
+                        Stop Recording
+                    </button>
                 </div>
             </div>
         </div>
