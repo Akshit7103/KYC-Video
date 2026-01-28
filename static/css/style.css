@@ -1113,6 +1113,38 @@ body {
     gap: 12px;
 }
 
+.document-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.document-item svg {
+    color: #64748B;
+}
+
+.btn-remove-doc {
+    padding: 4px;
+    background: transparent;
+    border: none;
+    color: #64748B;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-remove-doc:hover {
+    background: #F1F5F9;
+    color: #DC2626;
+}
+
 .upload-progress-section {
     background: white;
     border-radius: 12px;
