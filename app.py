@@ -474,6 +474,60 @@ def view_results(analysis_id):
     return render_template('results.html', analysis_id=analysis_id)
 
 
+@app.route('/api/get-results/<analysis_id>')
+def get_results(analysis_id):
+    """Get analysis results as JSON"""
+    try:
+        # Load status to get the result path
+        status_data = load_status(analysis_id)
+        if not status_data:
+            return jsonify({'error': 'Analysis not found'}), 404
+
+        if status_data['status'] != 'completed':
+            return jsonify({'error': 'Analysis not completed yet'}), 400
+
+        # Get the result path from status
+        result_path = status_data.get('result_path')
+        if not result_path or not os.path.exists(result_path):
+            return jsonify({'error': 'Results file not found'}), 404
+
+        # Read the JSON report
+        with open(result_path, 'r', encoding='utf-8') as f:
+            results = json.load(f)
+
+        return jsonify(results)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/download-report/<analysis_id>')
+def download_report(analysis_id):
+    """Download the full JSON report"""
+    try:
+        # Load status to get the result path
+        status_data = load_status(analysis_id)
+        if not status_data:
+            return jsonify({'error': 'Analysis not found'}), 404
+
+        if status_data['status'] != 'completed':
+            return jsonify({'error': 'Analysis not completed yet'}), 400
+
+        # Get the result path from status
+        result_path = status_data.get('result_path')
+        if not result_path or not os.path.exists(result_path):
+            return jsonify({'error': 'Results file not found'}), 404
+
+        # Get directory and filename
+        directory = os.path.dirname(result_path)
+        filename = os.path.basename(result_path)
+
+        return send_from_directory(directory, filename, as_attachment=True)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 def run_analysis_background(analysis_id, video_path, reference_path, whisper_model):
     """Run video analysis in background thread"""
     try:
