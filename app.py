@@ -245,6 +245,72 @@ def upload_video():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/convert-to-mp4', methods=['POST'])
+def convert_to_mp4():
+    """Convert uploaded WebM video to MP4"""
+    try:
+        import subprocess
+
+        if 'video' not in request.files:
+            return jsonify({'error': 'No video file provided'}), 400
+
+        video = request.files['video']
+        if video.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+
+        # Save the WebM file temporarily
+        webm_filename = video.filename
+        webm_path = os.path.join(app.config['UPLOAD_FOLDER'], webm_filename)
+        video.save(webm_path)
+
+        # Create MP4 filename
+        mp4_filename = webm_filename.replace('.webm', '.mp4')
+        mp4_path = os.path.join(app.config['UPLOAD_FOLDER'], mp4_filename)
+
+        # Convert using FFmpeg
+        try:
+            subprocess.run([
+                'ffmpeg', '-i', webm_path,
+                '-c:v', 'libx264',  # H.264 video codec
+                '-preset', 'fast',   # Fast encoding
+                '-crf', '23',        # Quality (lower = better, 23 is good)
+                '-c:a', 'aac',       # AAC audio codec
+                '-b:a', '128k',      # Audio bitrate
+                '-movflags', '+faststart',  # Enable streaming
+                '-y',                # Overwrite output file
+                mp4_path
+            ], check=True, capture_output=True)
+
+            # Remove the WebM file after successful conversion
+            os.remove(webm_path)
+
+            return jsonify({
+                'success': True,
+                'filename': mp4_filename,
+                'message': 'Video converted to MP4 successfully'
+            })
+
+        except subprocess.CalledProcessError as e:
+            # If FFmpeg fails, keep the WebM file
+            return jsonify({
+                'success': False,
+                'error': 'FFmpeg conversion failed. Please ensure FFmpeg is installed.',
+                'details': e.stderr.decode() if e.stderr else str(e)
+            }), 500
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/download-converted/<filename>')
+def download_converted(filename):
+    """Download converted MP4 file"""
+    try:
+        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+
+
 @app.route('/analyze')
 def analyze_page():
     """Video analysis interface"""

@@ -94,12 +94,12 @@ async function startRecording() {
             }
         };
 
-        mediaRecorder.onstop = () => {
+        mediaRecorder.onstop = async () => {
             videoBlob = new Blob(recordedChunks, { type: 'video/webm' });
             console.log('Recording stopped. Blob size:', videoBlob.size);
 
-            // Auto-download the video
-            downloadVideo();
+            // Convert and download as MP4
+            await convertAndDownload();
         };
 
         mediaRecorder.start();
@@ -142,12 +142,75 @@ function stopRecording() {
     }
 }
 
-// Download video
-function downloadVideo() {
+// Convert WebM to MP4 and download
+async function convertAndDownload() {
     if (!videoBlob) {
         alert('No video recorded yet.');
         return;
     }
+
+    try {
+        // Show loading message
+        const stopBtn = document.getElementById('stop-recording-btn');
+        const originalText = stopBtn.innerHTML;
+        stopBtn.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="2"><animate attributeName="r" values="2;4;2" dur="1s" repeatCount="indefinite"/></circle></svg> Converting to MP4...';
+        stopBtn.disabled = true;
+
+        // Create form data
+        const formData = new FormData();
+        const timestamp = Date.now();
+        const webmFilename = `video_kyc_${timestamp}.webm`;
+        formData.append('video', videoBlob, webmFilename);
+
+        // Upload to server for conversion
+        const response = await fetch('/api/convert-to-mp4', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Conversion failed');
+        }
+
+        const result = await response.json();
+
+        if (result.success) {
+            // Download the MP4 file
+            const downloadLink = document.createElement('a');
+            downloadLink.href = `/api/download-converted/${result.filename}`;
+            downloadLink.download = result.filename;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+
+            console.log('Video converted and downloaded:', result.filename);
+            alert('Recording saved as: ' + result.filename);
+        } else {
+            throw new Error(result.error || 'Conversion failed');
+        }
+
+        // Reset UI
+        stopBtn.innerHTML = originalText;
+        stopBtn.disabled = false;
+
+        // Reset for next recording
+        videoBlob = null;
+        recordedChunks = [];
+        seconds = 0;
+        updateTimerDisplay();
+
+    } catch (error) {
+        console.error('Error converting video:', error);
+        alert('Error converting video to MP4. Downloading as WebM instead.');
+
+        // Fallback: download as WebM
+        downloadAsWebM();
+    }
+}
+
+// Fallback: Download as WebM
+function downloadAsWebM() {
+    if (!videoBlob) return;
 
     const url = URL.createObjectURL(videoBlob);
     const a = document.createElement('a');
@@ -166,14 +229,17 @@ function downloadVideo() {
         URL.revokeObjectURL(url);
     }, 100);
 
-    console.log('Video downloaded:', filename);
-    alert('Recording saved as: ' + filename);
+    console.log('Video downloaded as WebM:', filename);
 
     // Reset for next recording
     videoBlob = null;
     recordedChunks = [];
     seconds = 0;
     updateTimerDisplay();
+
+    // Reset stop button
+    const stopBtn = document.getElementById('stop-recording-btn');
+    stopBtn.disabled = false;
 }
 
 // Timer functions
